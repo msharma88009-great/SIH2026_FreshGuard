@@ -1,110 +1,43 @@
-function ShipmentsTable() {
-  const shipments = [
-    {
-      id: "SHIP001",
-      product: "Fresh Tomatoes",
-      route: "Nashik → Mumbai",
-      status: "In Transit",
-      temp: "6.4°C",
-      freshness: 92,
-    },
-    {
-      id: "SHIP002",
-      product: "Green Vegetables",
-      route: "Pune → Delhi",
-      status: "Alert",
-      temp: "8.7°C",
-      freshness: 76,
-    },
-    {
-      id: "SHIP003",
-      product: "Mangoes",
-      route: "Ratnagiri → Pune",
-      status: "In Transit",
-      temp: "5.9°C",
-      freshness: 95,
-    },
-    {
-      id: "SHIP004",
-      product: "Dairy Products",
-      route: "Kolhapur → Mumbai",
-      status: "Delivered",
-      temp: "4.2°C",
-      freshness: 98,
-    },
-  ];
+import { shipments } from '../data/mockData'
 
+export default function ShipmentsTable({ onSelect }) {
   return (
-    <div className="shipments-table-card">
-      <div className="card-heading">
-        <div>
-          <span className="section-label">LOGISTICS</span>
-          <h2>Active Shipments</h2>
-        </div>
-
-        <button className="view-all-button">
-          View all
-        </button>
+    <section className="panel">
+      <div className="section-heading">
+        <h3>Active Shipments</h3>
+        <span>{shipments.filter((item) => item.status !== 'Completed').length} in operation</span>
       </div>
-
-      <div className="table-wrapper">
-        <table className="shipments-table">
+      <div className="table-wrap">
+        <table className="data-table">
           <thead>
             <tr>
               <th>Shipment</th>
+              <th>Product</th>
               <th>Route</th>
-              <th>Status</th>
-              <th>Temp.</th>
+              <th>Temp</th>
               <th>Freshness</th>
+              <th>Status</th>
             </tr>
           </thead>
-
           <tbody>
-            {shipments.map((shipment) => (
-              <tr key={shipment.id}>
+            {shipments.map((item) => (
+              <tr key={item.id} onClick={() => onSelect?.(item)} style={{ cursor: onSelect ? 'pointer' : 'default' }}>
+                <td className="shipment-id">{item.id}</td>
+                <td>{item.product}</td>
+                <td>{item.origin} → {item.destination}</td>
+                <td>{item.temperature}°C</td>
+                <td>{item.freshness}%</td>
                 <td>
-                  <div className="shipment-name">
-                    <strong>{shipment.id}</strong>
-                    <span>{shipment.product}</span>
-                  </div>
-                </td>
-
-                <td>{shipment.route}</td>
-
-                <td>
-                  <span
-                    className={`shipment-status ${
-                      shipment.status
-                        .toLowerCase()
-                        .replace(" ", "-")
-                    }`}
-                  >
-                    {shipment.status}
-                  </span>
-                </td>
-
-                <td>{shipment.temp}</td>
-
-                <td>
-                  <div className="freshness-mini">
-                    <div className="freshness-bar">
-                      <span
-                        style={{
-                          width: `${shipment.freshness}%`,
-                        }}
-                      ></span>
-                    </div>
-
-                    <strong>{shipment.freshness}%</strong>
-                  </div>
+                  <span className={`status-pill ${
+                    item.status === 'Active' ? 'status-active' :
+                    item.status === 'Delayed' ? 'status-delayed' : 'status-completed'
+                  }`}>{item.status}</span>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    </section>
+  )
 }
-
-export default ShipmentsTable;

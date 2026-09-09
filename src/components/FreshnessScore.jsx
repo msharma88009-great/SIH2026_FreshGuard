@@ -1,59 +1,25 @@
-function FreshnessScore() {
-  const score = 92;
-
+export default function FreshnessScore({ score = 92 }) {
   return (
-    <div className="freshness-card">
-      <div className="freshness-header">
-        <div>
-          <span className="section-label">PRODUCT CONDITION</span>
-          <h2>Freshness Score</h2>
-          <p>Calculated from live IoT sensor conditions</p>
-        </div>
-
-        <div className="freshness-badge">
-          ● Excellent
-        </div>
+    <section className="panel freshness-card">
+      <div className="section-heading">
+        <h3>Freshness / Spoilage Score</h3>
+        <span>Live model</span>
       </div>
-
-      <div className="freshness-content">
-        <div className="score-circle">
-          <div className="score-inner">
-            <strong>{score}</strong>
-            <span>/100</span>
-          </div>
-        </div>
-
-        <div className="freshness-details">
-          <div className="freshness-item">
-            <span className="freshness-dot"></span>
-            <div>
-              <strong>Temperature</strong>
-              <small>Within safe range</small>
-            </div>
-            <b>Good</b>
-          </div>
-
-          <div className="freshness-item">
-            <span className="freshness-dot"></span>
-            <div>
-              <strong>Humidity</strong>
-              <small>Optimal storage condition</small>
-            </div>
-            <b>Good</b>
-          </div>
-
-          <div className="freshness-item">
-            <span className="freshness-dot"></span>
-            <div>
-              <strong>Gas Level</strong>
-              <small>No spoilage indication</small>
-            </div>
-            <b>Good</b>
+      <div
+        className="score-ring"
+        style={{ background: `conic-gradient(#16a36b 0 ${score}%, #e8edf2 ${score}% 100%)` }}
+      >
+        <div className="score-ring-inner">
+          <div>
+            <div className="score-number">{score}</div>
+            <div className="score-caption">out of 100</div>
           </div>
         </div>
       </div>
-    </div>
-  );
+      <div className="score-summary">
+        Excellent condition. Temperature, humidity and gas readings are
+        currently within the expected cold-chain range.
+      </div>
+    </section>
+  )
 }
-
-export default FreshnessScore;

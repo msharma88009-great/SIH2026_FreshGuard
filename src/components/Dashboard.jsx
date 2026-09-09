@@ -1,137 +1,51 @@
-import StatCard from "./StatCard";
-import SensorCard from "./SensorCard";
-import FreshnessScore from "./FreshnessScore";
-import SensorChart from "./SensorChart";
-import Alerts from "./Alerts";
-import ShipmentsTable from "./ShipmentsTable";
+import StatCard from './StatCard'
+import SensorCard from './SensorCard'
+import FreshnessScore from './FreshnessScore'
+import SensorChart from './SensorChart'
+import Alerts from './Alerts'
+import ShipmentsTable from './ShipmentsTable'
 
-function Dashboard() {
+export default function Dashboard({ onNavigate }) {
   return (
-    <>
-      {/* Dashboard Heading */}
-      <div className="heading-row">
+    <div>
+      <div className="page-title-row">
         <div>
-          <h1>Fresh Guard Overview</h1>
-          <p>
-            Real-time monitoring & tamper-evident traceability
-          </p>
+          <h2>Operations Dashboard</h2>
+          <p>Real-time visibility across Fresh Guard's cold-chain network.</p>
         </div>
-
-        <div className="live-status">
-          <span></span>
-          Live IoT stream
-          <small>updated every 3s</small>
-        </div>
+        <button className="primary-button" onClick={() => onNavigate?.('Shipments')}>View Shipments</button>
       </div>
 
-      {/* Statistics */}
       <div className="stats-grid">
-        <StatCard
-          icon="📦"
-          title="Total Shipments"
-          value="12"
-          change="+2 this week"
-          color="blue"
-        />
-
-        <StatCard
-          icon="🚚"
-          title="Active Shipments"
-          value="5"
-          change="Currently in transit"
-          color="purple"
-        />
-
-        <StatCard
-          icon="⚠️"
-          title="Active Alerts"
-          value="3"
-          change="Requires attention"
-          color="red"
-        />
-
-        <StatCard
-          icon="✓"
-          title="Verified Records"
-          value="28"
-          change="Blockchain verified"
-          color="green"
-        />
+        <StatCard label="Total Shipments" value="128" change="+12 this month" icon="▣" />
+        <StatCard label="Active Shipments" value="24" change="18% of total" icon="◉" />
+        <StatCard label="Active Alerts" value="03" change="1 critical" icon="⚠" />
+        <StatCard label="Verified Records" value="98.7%" change="+2.4% this week" icon="✓" />
       </div>
 
-      {/* Live Sensors */}
-      <div className="sensor-grid">
-        <SensorCard
-          icon="🌡️"
-          title="Temperature"
-          value="6.4"
-          unit="°C"
-          status="NORMAL"
-          description="Current container temperature"
-        />
-
-        <SensorCard
-          icon="💧"
-          title="Humidity"
-          value="74.6"
-          unit="%"
-          status="NORMAL"
-          description="Current humidity level"
-        />
-
-        <SensorCard
-          icon="🧪"
-          title="Gas Level"
-          value="166.7"
-          unit="ppm"
-          status="NORMAL"
-          description="Air quality monitoring"
-        />
-
-        <SensorCard
-          icon="🔒"
-          title="Container"
-          value="CLOSED"
-          unit=""
-          status="SECURE"
-          description="Container security status"
-        />
+      <div className="dashboard-section">
+        <div className="section-heading"><h3>Live Sensor Overview</h3><span>Updated just now</span></div>
+        <div className="sensor-grid">
+          <SensorCard name="Temperature" value="4.2" unit="°C" status="Good" icon="🌡" />
+          <SensorCard name="Humidity" value="78" unit="%" status="Good" icon="💧" />
+          <SensorCard name="Gas Level" value="0.18" unit=" ppm" status="Good" icon="◌" />
+          <SensorCard name="Container" value="C-104" unit="" status="Good" icon="▣" />
+        </div>
       </div>
 
-      {/* Freshness */}
-      <FreshnessScore />
-
-      {/* Sensor Charts */}
-      <div className="charts-grid">
-        <SensorChart
-          title="Temperature"
-          unit="°C"
-          value="6.4"
-          type="temperature"
-        />
-
-        <SensorChart
-          title="Humidity"
-          unit="%"
-          value="74.6"
-          type="humidity"
-        />
-
-        <SensorChart
-          title="Gas Level"
-          unit="ppm"
-          value="166.7"
-          type="gas"
-        />
+      <div className="dashboard-section dashboard-grid">
+        <SensorChart title="Temperature" values={[4.0, 4.4, 4.1, 4.8, 4.2, 4.5, 4.2]} />
+        <FreshnessScore score={92} />
       </div>
 
-      {/* Alerts + Shipments */}
-      <div className="bottom-grid">
+      <div className="dashboard-section dashboard-grid">
         <Alerts />
-        <ShipmentsTable />
+        <SensorChart title="Humidity" values={[76, 78, 77, 80, 79, 78, 78]} />
       </div>
-    </>
-  );
-}
 
-export default Dashboard;
+      <div className="dashboard-section">
+        <ShipmentsTable onSelect={() => onNavigate?.('Shipments')} />
+      </div>
+    </div>
+  )
+}

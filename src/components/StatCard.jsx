@@ -1,31 +1,12 @@
-function StatCard({
-  icon,
-  title,
-  value,
-  change,
-  color = "blue",
-}) {
+export default function StatCard({ label, value, change, icon }) {
   return (
-    <div className={`stat-card ${color}`}>
-      <div className="stat-card-top">
-        <div className="stat-icon">{icon}</div>
-
-        <span className="stat-indicator">●</span>
+    <article className="stat-card">
+      <div className="stat-top">
+        <span className="stat-label">{label}</span>
+        <span className="stat-icon">{icon}</span>
       </div>
-
-      <div className="stat-content">
-        <span className="stat-title">{title}</span>
-
-        <strong className="stat-value">{value}</strong>
-
-        {change && (
-          <span className="stat-change">
-            {change}
-          </span>
-        )}
-      </div>
-    </div>
-  );
+      <div className="stat-value">{value}</div>
+      <div className="stat-change">{change}</div>
+    </article>
+  )
 }
-
-export default StatCard;

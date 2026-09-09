@@ -1,71 +1,15 @@
-function HashVerificationCard({
-  shipment,
-  batch,
-  status,
-  hash,
-  time,
-}) {
+export default function HashVerificationCard({ record }) {
   return (
-    <div className="hash-verification-card">
-
-      <div className="hash-card-top">
-
-        <div className="hash-card-icon">
-          🔐
+    <article className="hash-card">
+      <div className="hash-head">
+        <div>
+          <strong>{record.id} • {record.shipmentId}</strong>
+          <div className="shipment-id-small">{record.timestamp}</div>
         </div>
-
-        <span
-          className={`hash-status ${
-            status?.toLowerCase()
-          }`}
-        >
-          ✓ {status}
-        </span>
-
+        <span className="status-pill status-active">✓ {record.status}</span>
       </div>
-
-      <div className="hash-card-content">
-
-        <span className="section-label">
-          SHIPMENT
-        </span>
-
-        <h3>{shipment}</h3>
-
-        <div className="hash-info">
-
-          <div>
-            <span>Batch ID</span>
-            <strong>{batch}</strong>
-          </div>
-
-          <div>
-            <span>Verified</span>
-            <strong>{time}</strong>
-          </div>
-
-        </div>
-
-        <div className="hash-value">
-
-          <span>Record Hash</span>
-
-          <code>{hash}</code>
-
-          <button
-            title="Copy hash"
-            onClick={() =>
-              navigator.clipboard?.writeText(hash)
-            }
-          >
-            ⧉
-          </button>
-
-        </div>
-
-      </div>
-    </div>
-  );
+      <div className="hash-code">Current hash: {record.hash}<br />Previous hash: {record.previousHash}</div>
+      <div className="hash-meta"><span>SHA-256 chain record</span><span>Tamper-evident link</span></div>
+    </article>
+  )
 }
-
-export default HashVerificationCard;

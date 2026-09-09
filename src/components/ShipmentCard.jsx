@@ -1,79 +1,22 @@
-function ShipmentCard({ shipment, onClick }) {
-  if (!shipment) {
-    return null;
-  }
-
-  const statusClass = shipment.status
-    ? shipment.status.toLowerCase().replace(/\s+/g, "-")
-    : "unknown";
-
+export default function ShipmentCard({ shipment, onClick }) {
   return (
-    <div
-      className="shipment-card"
-      onClick={onClick}
-    >
-      <div className="shipment-card-header">
+    <button className="shipment-card" onClick={() => onClick?.(shipment)} style={{ width: '100%', border: '1px solid var(--line)', textAlign: 'left' }}>
+      <div className="shipment-card-head">
         <div>
-          <span className="shipment-id">
-            {shipment.id}
-          </span>
-
-          <h3>{shipment.product}</h3>
+          <div className="shipment-product">{shipment.product}</div>
+          <div className="shipment-id-small">{shipment.id} • {shipment.container}</div>
         </div>
-
-        <span
-          className={`shipment-status ${statusClass}`}
-        >
-          {shipment.status}
-        </span>
+        <span className={`status-pill ${
+          shipment.status === 'Active' ? 'status-active' :
+          shipment.status === 'Delayed' ? 'status-delayed' : 'status-completed'
+        }`}>{shipment.status}</span>
       </div>
-
-      <div className="shipment-route">
-        <div className="route-point">
-          <span className="route-dot origin"></span>
-          <div>
-            <small>FROM</small>
-            <strong>{shipment.source}</strong>
-          </div>
-        </div>
-
-        <div className="route-line"></div>
-
-        <div className="route-point">
-          <span className="route-dot destination"></span>
-          <div>
-            <small>TO</small>
-            <strong>{shipment.destination}</strong>
-          </div>
-        </div>
+      <div className="shipment-route">{shipment.origin} → {shipment.destination}<br />ETA: {shipment.eta}</div>
+      <div className="shipment-metrics">
+        <div className="mini-metric"><span>Temp</span><strong>{shipment.temperature}°C</strong></div>
+        <div className="mini-metric"><span>Humidity</span><strong>{shipment.humidity}%</strong></div>
+        <div className="mini-metric"><span>Freshness</span><strong>{shipment.freshness}%</strong></div>
       </div>
-
-      <div className="shipment-card-footer">
-        <div>
-          <small>Temperature</small>
-          <strong>
-            {shipment.temperature || "6.4°C"}
-          </strong>
-        </div>
-
-        <div>
-          <small>Freshness</small>
-          <strong>
-            {shipment.freshness || 92}%
-          </strong>
-        </div>
-
-        <button
-          onClick={(event) => {
-            event.stopPropagation();
-            onClick?.();
-          }}
-        >
-          View Details →
-        </button>
-      </div>
-    </div>
-  );
+    </button>
+  )
 }
-
-export default ShipmentCard;

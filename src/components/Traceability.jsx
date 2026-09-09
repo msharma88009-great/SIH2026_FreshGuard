@@ -1,77 +1,27 @@
-import TraceabilityTimeline from "./TraceabilityTimeline";
+import { traceabilityEvents } from '../data/mockData'
+import TraceabilityTimeline from './TraceabilityTimeline'
 
-function Traceability() {
+export default function Traceability() {
   return (
-    <div className="traceability-page">
-      <div className="page-heading">
+    <div>
+      <div className="page-title-row">
         <div>
-          <span className="section-label">
-            FARM TO FORK
-          </span>
-
-          <h1>Traceability</h1>
-
-          <p>
-            Follow a product through every stage of its journey.
-          </p>
+          <h2>Farm-to-Fork Traceability</h2>
+          <p>End-to-end product history with event-level integrity records.</p>
         </div>
-
-        <div className="verified-header">
-          <span>✓</span>
-          Blockchain Verified
-        </div>
+        <span className="status-pill status-active">Hash chain verified</span>
       </div>
 
-      <div className="trace-search-card">
-        <div>
-          <span className="section-label">
-            TRACE A BATCH
-          </span>
-
-          <h2>Find Product Journey</h2>
-
-          <p>
-            Enter a shipment or batch ID to view its complete
-            history.
-          </p>
+      <section className="panel">
+        <div className="detail-head">
+          <div>
+            <strong>FG-2026-001 • Fresh Tomatoes</strong>
+            <div className="shipment-id-small">Nashik Farm → Delhi Retail Hub</div>
+          </div>
+          <span className="status-pill status-active">Verified</span>
         </div>
-
-        <div className="trace-search">
-          <input
-            type="text"
-            placeholder="Enter Batch ID e.g. BATCH-2026-001"
-            defaultValue="BATCH-2026-001"
-          />
-
-          <button className="primary-button">
-            Trace Batch
-          </button>
-        </div>
-      </div>
-
-      <div className="trace-product-card">
-        <div className="product-icon">🍅</div>
-
-        <div className="product-info">
-          <span>PRODUCT</span>
-          <h2>Fresh Tomatoes</h2>
-          <p>Batch ID: BATCH-2026-001</p>
-        </div>
-
-        <div className="product-status">
-          <span>Current Status</span>
-          <strong>✓ In Transit</strong>
-        </div>
-
-        <div className="product-freshness">
-          <span>Freshness</span>
-          <strong>92%</strong>
-        </div>
-      </div>
-
-      <TraceabilityTimeline />
+        <TraceabilityTimeline events={traceabilityEvents} />
+      </section>
     </div>
-  );
+  )
 }
-
-export default Traceability;

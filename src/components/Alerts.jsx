@@ -1,63 +1,24 @@
-function Alerts() {
-  const alerts = [
-    {
-      icon: "🌡️",
-      title: "Temperature spike detected",
-      description: "Shipment SHIP002 exceeded 8°C",
-      time: "8 min ago",
-      level: "warning",
-    },
-    {
-      icon: "📍",
-      title: "Route deviation detected",
-      description: "Shipment SHIP003 moved from planned route",
-      time: "21 min ago",
-      level: "danger",
-    },
-    {
-      icon: "🔐",
-      title: "Container opened",
-      description: "Container access recorded for SHIP001",
-      time: "42 min ago",
-      level: "info",
-    },
-  ];
+import { alerts } from '../data/mockData'
 
+export default function Alerts({ limit = 3 }) {
   return (
-    <div className="alerts-card">
-      <div className="card-heading">
-        <div>
-          <span className="section-label">MONITORING</span>
-          <h2>Recent Alerts</h2>
-        </div>
-
-        <button className="view-all-button">
-          View all
-        </button>
+    <section className="panel">
+      <div className="section-heading">
+        <h3>Recent Alerts</h3>
+        <span>{alerts.length} total</span>
       </div>
-
-      <div className="alerts-list">
-        {alerts.map((alert, index) => (
-          <div
-            className={`alert-item ${alert.level}`}
-            key={index}
-          >
-            <div className="alert-icon">
-              {alert.icon}
-            </div>
-
+      <div className="alert-list">
+        {alerts.slice(0, limit).map((item) => (
+          <div className="alert-card" key={item.id}>
+            <span className={`alert-dot ${item.severity}`} />
             <div className="alert-content">
-              <strong>{alert.title}</strong>
-              <p>{alert.description}</p>
-              <span>{alert.time}</span>
+              <strong>{item.title}</strong>
+              <p>{item.description}</p>
             </div>
-
-            <div className="alert-arrow">›</div>
+            <span className="alert-time">{item.time}</span>
           </div>
         ))}
       </div>
-    </div>
-  );
+    </section>
+  )
 }
-
-export default Alerts;

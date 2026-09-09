@@ -1,46 +1,18 @@
-function SensorCard({
-  icon,
-  title,
-  value,
-  unit,
-  status,
-  description,
-}) {
+export default function SensorCard({ name, value, unit, status = 'Good', icon = '◉' }) {
   const statusClass =
-    status?.toLowerCase() === "normal"
-      ? "normal"
-      : status?.toLowerCase() === "secure"
-      ? "secure"
-      : "warning";
+    status === 'Critical' ? 'status-critical' :
+    status === 'Warning' ? 'status-warning' : 'status-good'
 
   return (
-    <div className="sensor-card">
-      <div className="sensor-card-header">
-        <div className="sensor-icon">{icon}</div>
-
-        <span className={`sensor-status ${statusClass}`}>
-          <span className="status-dot"></span>
-          {status}
-        </span>
+    <article className="sensor-card">
+      <div className="sensor-head">
+        <span className="sensor-name">{name}</span>
+        <span className="sensor-icon">{icon}</span>
       </div>
-
-      <div className="sensor-title">
-        {title}
-      </div>
-
       <div className="sensor-value">
-        <strong>{value}</strong>
-
-        {unit && (
-          <span>{unit}</span>
-        )}
+        {value}<span className="sensor-unit">{unit}</span>
       </div>
-
-      <p className="sensor-description">
-        {description}
-      </p>
-    </div>
-  );
+      <span className={`sensor-status ${statusClass}`}>{status}</span>
+    </article>
+  )
 }
-
-export default SensorCard;

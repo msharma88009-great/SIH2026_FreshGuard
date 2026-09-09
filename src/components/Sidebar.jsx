@@ -1,63 +1,40 @@
-function Sidebar({ activePage, onPageChange }) {
-  const menuItems = [
-    { name: "Dashboard", icon: "▦" },
-    { name: "Shipments", icon: "▤" },
-    { name: "Live Monitoring", icon: "◉" },
-    { name: "Map Tracking", icon: "⌖" },
-    { name: "Alerts", icon: "⚠" },
-    { name: "History", icon: "◷" },
-    { name: "Traceability", icon: "⇄" },
-    { name: "QR Verification", icon: "▣" },
-    { name: "Hash Verification", icon: "#" },
-    { name: "Settings", icon: "⚙" },
-  ];
+const items = [
+  ['Dashboard', '⌂'],
+  ['Shipments', '▣'],
+  ['Live Monitoring', '◉'],
+  ['Map Tracking', '⌖'],
+  ['Alerts', '⚠'],
+  ['History', '◷'],
+  ['Traceability', '⌁'],
+  ['QR Verification', '▦'],
+  ['Hash Verification', '#'],
+  ['Settings', '⚙'],
+]
 
+export default function Sidebar({ activePage, onNavigate }) {
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="logo-mark">F</div>
-
+      <div className="brand">
+        <div className="brand-mark">FG</div>
         <div>
-          <h2>Fresh Guard</h2>
-          <span>Farm-to-Fork Security</span>
+          <div className="brand-title">Fresh Guard</div>
+          <div className="brand-subtitle">Cold Chain Control</div>
         </div>
       </div>
 
-      <div className="sidebar-section-title">
-        MAIN MENU
-      </div>
-
-      <nav className="sidebar-nav">
-        {menuItems.map((item) => (
+      <div className="nav-label">Operations</div>
+      <nav className="nav-list">
+        {items.map(([label, icon]) => (
           <button
-            key={item.name}
-            className={`nav-item ${
-              activePage === item.name ? "active" : ""
-            }`}
-            onClick={() => onPageChange(item.name)}
+            key={label}
+            className={`nav-item ${activePage === label ? 'active' : ''}`}
+            onClick={() => onNavigate(label)}
           >
-            <span className="nav-icon">{item.icon}</span>
-            <span>{item.name}</span>
+            <span className="nav-icon">{icon}</span>
+            <span>{label}</span>
           </button>
         ))}
       </nav>
-
-      <div className="sidebar-bottom">
-        <div className="system-status">
-          <span className="status-dot"></span>
-
-          <div>
-            <strong>System Online</strong>
-            <small>All services operational</small>
-          </div>
-        </div>
-
-        <div className="sidebar-version">
-          Fresh Guard v1.0
-        </div>
-      </div>
     </aside>
-  );
+  )
 }
-
-export default Sidebar;
