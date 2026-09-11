@@ -1,0 +1,72 @@
+{
+  "shipments": [
+    {
+      "shipment_id": "FG-1001",
+      "product": "Fresh Tomatoes",
+      "origin": "Nashik Farm",
+      "destination": "Jaipur Retail Hub",
+      "status": "Active",
+      "freshness_score": 94,
+      "created_at": "2026-09-09T10:00:00Z"
+    },
+    {
+      "shipment_id": "FG-1002",
+      "product": "Fresh Apples",
+      "origin": "Shimla Farm",
+      "destination": "Delhi Distribution Center",
+      "status": "In Transit",
+      "freshness_score": 88,
+      "created_at": "2026-09-09T09:30:00Z"
+    }
+  ],
+  "sensor_readings": [
+    {
+      "reading_id": "RD-10001",
+      "shipment_id": "FG-1001",
+      "temperature": 4.2,
+      "humidity": 68,
+      "gas_level": 42,
+      "freshness_score": 94,
+      "timestamp": "2026-09-09T10:05:00Z",
+      "location": {
+        "latitude": 20.011,
+        "longitude": 73.789
+      }
+    }
+  ],
+  "alerts": [
+    {
+      "alert_id": "AL-1001",
+      "shipment_id": "FG-1002",
+      "alert_type": "Temperature",
+      "severity": "Warning",
+      "message": "Temperature approaching configured threshold",
+      "timestamp": "2026-09-09T10:10:00Z",
+      "acknowledged": false
+    }
+  ],
+  "traceability": [
+    {
+      "event_id": "EV-1001",
+      "shipment_id": "FG-1001",
+      "stage": "Farm",
+      "actor": "Farm Collection Unit",
+      "location": "Nashik Farm",
+      "timestamp": "2026-09-09T08:00:00Z",
+      "metadata": {
+        "batch_id": "BATCH-001"
+      }
+    },
+    {
+      "event_id": "EV-1002",
+      "shipment_id": "FG-1001",
+      "stage": "Collection",
+      "actor": "Collection Center",
+      "location": "Nashik Collection Center",
+      "timestamp": "2026-09-09T09:00:00Z",
+      "metadata": {
+        "batch_id": "BATCH-001"
+      }
+    }
+  ]
+}

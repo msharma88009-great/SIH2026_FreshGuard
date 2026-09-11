@@ -1,35 +1,102 @@
-import { useMemo, useState } from 'react'
-import { hashRecords } from '../data/mockData'
-import HashVerificationCard from './HashVerificationCard'
+import { useState } from 'react'
+import { verifyHash } from '../services/api'
 
 export default function HashVerification() {
-  const [query, setQuery] = useState('')
+  const [record, setRecord] = useState('')
+  const [hash, setHash] = useState('')
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return hashRecords
-    return hashRecords.filter((record) =>
-      [record.id, record.shipmentId, record.hash].some((value) => value.toLowerCase().includes(q))
-    )
-  }, [query])
+  async function handleVerify(event) {
+    event.preventDefault()
+
+    if (!record.trim() || !hash.trim()) return
+
+    setLoading(true)
+    setResult(null)
+
+    try {
+      const response = await verifyHash({
+        record: record.trim(),
+        expected_hash: hash.trim(),
+      })
+
+      setResult(response)
+    } catch (error) {
+      setResult({
+        success: false,
+        error: error.message,
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div>
       <div className="page-title-row">
         <div>
           <h2>Hash Verification</h2>
-          <p>Inspect tamper-evident event links before blockchain anchoring.</p>
+          <p>Verify the integrity of a Fresh Guard record.</p>
         </div>
-        <span className="status-pill status-active">Chain integrity OK</span>
       </div>
 
-      <div className="filter-row">
-        <input className="filter-input" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search hash, shipment or record ID..." />
-      </div>
+      <section className="panel">
+        <div className="section-heading">
+          <h3>Integrity Check</h3>
+          <span>SHA-256 verification</span>
+        </div>
 
-      <div className="hash-grid">
-        {filtered.map((record) => <HashVerificationCard key={record.id} record={record} />)}
-      </div>
+        <form onSubmit={handleVerify}>
+          <input
+            type="text"
+            value={record}
+            onChange={(event) => setRecord(event.target.value)}
+            placeholder="Enter record data"
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '12px',
+            }}
+          />
+
+          <input
+            type="text"
+            value={hash}
+            onChange={(event) => setHash(event.target.value)}
+            placeholder="Enter expected hash"
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '12px',
+            }}
+          />
+
+          <button
+            className="primary-button"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? 'Verifying...' : 'Verify Hash'}
+          </button>
+        </form>
+
+        {result && (
+          <div style={{ marginTop: '20px' }}>
+            <strong>
+              {result.success
+                ? '✓ Hash Verified'
+                : '✕ Verification Failed'}
+            </strong>
+
+            <p>
+              {result.message ||
+                result.error ||
+                'Hash verification completed.'}
+            </p>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

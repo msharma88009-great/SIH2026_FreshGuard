@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fresh Guard Sensor Reading",
+  "type": "object",
+  "required": [
+    "reading_id",
+    "shipment_id",
+    "temperature",
+    "humidity",
+    "gas_level",
+    "timestamp"
+  ],
+  "properties": {
+    "reading_id": {
+      "type": "string"
+    },
+    "shipment_id": {
+      "type": "string"
+    },
+    "temperature": {
+      "type": "number"
+    },
+    "humidity": {
+      "type": "number"
+    },
+    "gas_level": {
+      "type": "number"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "freshness_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

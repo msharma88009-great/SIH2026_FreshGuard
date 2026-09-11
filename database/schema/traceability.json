@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fresh Guard Traceability Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "shipment_id",
+    "stage",
+    "location",
+    "timestamp"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "shipment_id": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
