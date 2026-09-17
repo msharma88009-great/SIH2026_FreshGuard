@@ -1,23 +1,41 @@
-import os,copy
+import copy, os
 try:
     from pymongo import MongoClient
 except ImportError:
-    MongoClient=None
+    MongoClient = None
+
 class Database:
+    collections = ('shipments', 'sensor_readings', 'alerts', 'traceability')
     def __init__(self):
-        self.memory={"shipments":[],"sensor_readings":[],"alerts":[],"traceability":[]}; self.db=None
+        self.memory = {name: [] for name in self.collections}
+        self.db = None
+        self.mode = 'memory'
         if MongoClient:
             try:
-                c=MongoClient(os.getenv("MONGO_URI","mongodb://127.0.0.1:27017"),serverSelectionTimeoutMS=1000); c.admin.command("ping"); self.db=c[os.getenv("MONGO_DB_NAME","freshguard")]
-            except Exception: self.db=None
-    def insert_one(self,col,doc):
-        if self.db is not None: return str(self.db[col].insert_one(copy.deepcopy(doc)).inserted_id)
-        self.memory.setdefault(col,[]).append(copy.deepcopy(doc)); return str(doc.get("_id",doc.get("shipment_id",doc.get("reading_id",""))))
-    def find_many(self,col,q=None):
-        q=q or {}
-        if self.db is not None: return list(self.db[col].find(q,{"_id":0}))
-        return [copy.deepcopy(x) for x in self.memory.get(col,[]) if all(x.get(k)==v for k,v in q.items())]
-    def find_one(self,col,q):
-        if self.db is not None: return self.db[col].find_one(q,{"_id":0})
-        return next((copy.deepcopy(x) for x in self.memory.get(col,[]) if all(x.get(k)==v for k,v in q.items())),None)
-db=Database()
+                client = MongoClient(os.getenv('MONGO_URI', 'mongodb://127.0.0.1:27017'), serverSelectionTimeoutMS=1200)
+                client.admin.command('ping')
+                self.db = client[os.getenv('MONGO_DB_NAME', 'freshguard')]
+                self.mode = 'mongodb'
+                self.db.sensor_readings.create_index('reading_id', unique=True)
+            except Exception:
+                self.db = None
+
+    def insert_one(self, col, doc):
+        if self.db is not None:
+            try: return str(self.db[col].insert_one(copy.deepcopy(doc)).inserted_id)
+            except Exception as exc:
+                if 'duplicate key' in str(exc).lower(): return str(doc.get('reading_id', 'duplicate'))
+                raise
+        self.memory.setdefault(col, []).append(copy.deepcopy(doc))
+        return str(doc.get('reading_id', doc.get('shipment_id', '')))
+
+    def find_many(self, col, query=None):
+        query = query or {}
+        if self.db is not None: return list(self.db[col].find(query, {'_id': 0}).sort('timestamp', 1))
+        return [copy.deepcopy(x) for x in self.memory.get(col, []) if all(x.get(k) == v for k, v in query.items())]
+
+    def find_one(self, col, query):
+        if self.db is not None: return self.db[col].find_one(query, {'_id': 0})
+        return next((copy.deepcopy(x) for x in self.memory.get(col, []) if all(x.get(k) == v for k, v in query.items())), None)
+
+db = Database()

@@ -1,7 +1,8 @@
 export default function SensorCard({ name, value, unit, status = 'Good', icon = '◉' }) {
   const statusClass =
     status === 'Critical' ? 'status-critical' :
-    status === 'Warning' ? 'status-warning' : 'status-good'
+    status === 'Warning' ? 'status-warning' :
+    status === 'Waiting' ? 'status-waiting' : 'status-good'
 
   return (
     <article className="sensor-card">

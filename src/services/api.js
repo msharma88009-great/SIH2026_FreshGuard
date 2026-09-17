@@ -1,60 +1,23 @@
-export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
 async function apiRequest(endpoint, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
-    ...options,
-  })
-
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`)
-  }
-
-  return response.json()
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), options.timeout ?? 5000)
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, signal: controller.signal, headers: { 'Content-Type': 'application/json', ...(options.headers || {}) } })
+    const payload = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(payload.error || `API request failed: ${response.status}`)
+    return payload
+  } finally { clearTimeout(timeout) }
 }
 
-export function getHealth() {
-  return apiRequest('/health')
-}
-
-export function getShipments() {
-  return apiRequest('/shipments')
-}
-
-export function getShipment(shipmentId) {
-  return apiRequest(`/shipments/${encodeURIComponent(shipmentId)}`)
-}
-
-export function getSensors(shipmentId) {
-  const query = shipmentId
-    ? `?shipment_id=${encodeURIComponent(shipmentId)}`
-    : ''
-
-  return apiRequest(`/sensors${query}`)
-}
-
-export function getAlerts() {
-  return apiRequest('/alerts')
-}
-
-export function getTraceability(shipmentId) {
-  return apiRequest(`/traceability/${encodeURIComponent(shipmentId)}`)
-}
-
-export function verifyQR(code) {
-  return apiRequest('/qr/verify', {
-    method: 'POST',
-    body: JSON.stringify({ code }),
-  })
-}
-
-export function verifyHash(data) {
-  return apiRequest('/hash/verify', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
-}
+export const getHealth = () => apiRequest('/health')
+export const getShipments = () => apiRequest('/shipments')
+export const getShipment = (id) => apiRequest(`/shipments/${encodeURIComponent(id)}`)
+export const createShipment = (data) => apiRequest('/shipments', { method: 'POST', body: JSON.stringify(data) })
+export const getSensors = (shipmentId) => apiRequest(`/sensors${shipmentId ? `?shipment_id=${encodeURIComponent(shipmentId)}` : ''}`)
+export const getAlerts = () => apiRequest('/alerts')
+export const getTraceability = (id) => apiRequest(`/traceability/${encodeURIComponent(id)}`)
+export const verifyQR = (code) => apiRequest('/qr/verify', { method: 'POST', body: JSON.stringify({ code }) })
+export const verifyHash = (data) => apiRequest('/hash/verify', { method: 'POST', body: JSON.stringify(data) })
+export const syncSensorReadings = (records) => apiRequest('/sensors/sync', { method: 'POST', body: JSON.stringify({ records }) })

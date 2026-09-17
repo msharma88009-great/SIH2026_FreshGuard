@@ -51,10 +51,11 @@ export default function Traceability() {
       <div className="page-title-row">
         <div>
           <h2>Traceability</h2>
-          <p>Farm-to-fork journey and verified shipment events.</p>
+          <p>Follow each shipment stage from origin to destination with backend records.</p>
         </div>
       </div>
 
+      <section className="traceability-overview"><div className="trace-step"><b>01</b><span>Farm</span><small>Source record</small></div><div className="trace-line" /><div className="trace-step"><b>02</b><span>Collection</span><small>Handoff</small></div><div className="trace-line" /><div className="trace-step"><b>03</b><span>Transport</span><small>IoT telemetry</small></div><div className="trace-line" /><div className="trace-step"><b>04</b><span>Destination</span><small>Final record</small></div></section>
       <section className="panel">
         <div className="section-heading">
           <h3>Select Shipment</h3>

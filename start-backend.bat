@@ -1,0 +1,6 @@
+@echo off
+cd /d "%~dp0backend"
+echo Installing backend dependencies...
+python -m pip install -r requirements.txt
+echo Starting Fresh Guard backend...
+python app.py

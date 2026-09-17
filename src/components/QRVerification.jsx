@@ -38,7 +38,7 @@ export default function QRVerification() {
       <div className="page-title-row">
         <div>
           <h2>QR Verification</h2>
-          <p>Verify a product's farm-to-fork digital record.</p>
+          <p>Scan or enter a QR payload and verify the linked shipment record.</p>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export default function QRVerification() {
             <span>QR verification</span>
           </div>
 
-          <QRScanner onDemo={handleDemoQR} />
+          <QRScanner onDemo={handleDemoQR} onDetected={(value) => { setCode(value); setResult(null) }} />
 
           <form onSubmit={handleVerify} style={{ marginTop: '20px' }}>
             <input

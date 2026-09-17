@@ -115,7 +115,7 @@ export default function ShipmentDetails({ shipment, onBack }) {
 
             <div className="detail-row">
               <span>Container</span>
-              <strong>{sensor?.container_id ?? 'C-104'}</strong>
+              <strong>{sensor?.container_id ?? shipment?.container_id ?? '—'}</strong>
             </div>
 
             <div className="detail-row">

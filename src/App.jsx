@@ -14,6 +14,8 @@ import Traceability from './components/Traceability'
 import QRVerification from './components/QRVerification'
 import HashVerification from './components/HashVerification'
 import Settings from './components/Settings'
+import Profile from './components/Profile'
+import Footer from './components/Footer'
 
 const pages = {
   Dashboard,
@@ -26,6 +28,7 @@ const pages = {
   'QR Verification': QRVerification,
   'Hash Verification': HashVerification,
   Settings,
+  Profile,
 }
 
 function getSavedProfile() {
@@ -129,6 +132,8 @@ export default function App() {
             onDarkModeChange={handleDarkModeChange}
           />
         </main>
+
+        <Footer />
       </div>
     </div>
   )

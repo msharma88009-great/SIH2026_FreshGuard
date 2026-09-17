@@ -307,7 +307,7 @@ export default function Settings({ darkMode, onDarkModeChange }) {
             <h4>Profile Settings</h4>
             <p>
               Your name, phone, email, role and farm information are
-              stored locally for this demo.
+              stored locally on this browser for the current operator session.
             </p>
           </div>
 
@@ -318,7 +318,7 @@ export default function Settings({ darkMode, onDarkModeChange }) {
           <div>
             <h4>Security</h4>
             <p>
-              OTP-based login is currently running in demo mode.
+              OTP verification protects access to the operator dashboard.
             </p>
           </div>
 
